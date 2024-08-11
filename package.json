@@ -1,0 +1,40 @@
+{
+    "name": "voctor",
+    "version": "1.0.0",
+    "description": "voctor is a versatile and high-performance library for vector mathematics, providing easy-to-use implementations for vectors",
+    "main": "dist/index.js",
+    "scripts": {
+        "compile": "tsup ./src/index.ts --format cjs,esm --dts",
+        "release": "npm run compile && npm run lint",
+        "publish": "npm run release && npm publish --access=public",
+        "try": "ts-node src/index.ts",
+        "lint": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EyadRealHim/voctor.git"
+    },
+    "author": "eyadrealhim",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/EyadRealHim/voctor/issues"
+    },
+    "homepage": "https://github.com/EyadRealHim/voctor#readme",
+    "keywords": [
+        "vector",
+        "mathematics",
+        "vec2",
+        "vec3",
+        "vec4",
+        "2D",
+        "3D",
+        "4D",
+        "arithmetic",
+        "graphics"
+    ],
+    "devDependencies": {
+        "ts-node": "^10.9.2",
+        "tsup": "^8.2.4",
+        "typescript": "^5.5.4"
+    }
+}
