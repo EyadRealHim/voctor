@@ -208,6 +208,13 @@ var Vec2 = class _Vec2 {
   clone() {
     return new _Vec2(this.x, this.y);
   }
+  /**
+   * Returns a string representation of this vector.
+   * @returns A string in the format "Vec2(x, y)".
+   */
+  toString() {
+    return `Vec2(${this.x}, ${this.y})`;
+  }
   set(a1, a2) {
     if (typeof a1 === "number") {
       if (typeof a2 == "number") {
@@ -217,8 +224,13 @@ var Vec2 = class _Vec2 {
         this.x = this.y = a1;
       }
     } else {
-      this.x = a1.x;
-      this.y = a1.y;
+      if (Array.isArray(a1)) {
+        this.x = a1[0];
+        this.y = a1[1];
+      } else {
+        this.x = a1.x;
+        this.y = a1.y;
+      }
     }
     return this;
   }
@@ -275,6 +287,51 @@ var Vec2 = class _Vec2 {
    */
   toObject() {
     return { x: this.x, y: this.y };
+  }
+  /**
+   * Calculates the angle (in radians) using atan2
+   * @returns The angle in radians.
+   */
+  atan2() {
+    return Math.atan2(this.y, this.x);
+  }
+  /**
+   * Sets the components of this vector to zero in-place.
+   * @returns This vector after setting its components to zero.
+   */
+  izero() {
+    this.x = 0;
+    this.y = 0;
+    return this;
+  }
+  /**
+   * Calculates the Euclidean distance between this vector and another object.
+   *
+   * @param other - The other object to calculate the distance to. Can be a Vec2 instance, an object with x and y properties, or an array of two numbers.
+   * @returns The Euclidean distance between this vector and the other object.
+   */
+  dist(other) {
+    if (Array.isArray(other)) {
+      return Math.sqrt(
+        (this.x - other[0]) * (this.x - other[0]) + (this.y - other[1]) * (this.y - other[1])
+      );
+    } else {
+      return Math.sqrt(
+        (this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y)
+      );
+    }
+  }
+  /**
+   * Calculates the squared distance between this vector and another vector represented as an array, object, or Vec2 object.
+   * @param other - The other vector.
+   * @returns The squared distance between the two vectors.
+   */
+  distSq(other) {
+    if (Array.isArray(other)) {
+      return (this.x - other[0]) * (this.x - other[0]) + (this.y - other[1]) * (this.y - other[1]);
+    } else {
+      return (this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y);
+    }
   }
   // Static:
   /**

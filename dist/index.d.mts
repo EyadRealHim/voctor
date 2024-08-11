@@ -228,6 +228,11 @@ declare class Vec2 {
      */
     clone(): Vec2;
     /**
+     * Returns a string representation of this vector.
+     * @returns A string in the format "Vec2(x, y)".
+     */
+    toString(): string;
+    /**
      * Sets the components of this vector to a scalar value.
      * @param scaler - The scalar value to set both components to.
      * @returns This vector after the operation.
@@ -246,6 +251,7 @@ declare class Vec2 {
      * @returns This vector after the operation.
      */
     set(x: number, y: number): this;
+    set(arr: [number, number]): this;
     /**
      * Linearly interpolates between this vector and another vector, returning a new vector.
      * @param other - The other vector.
@@ -284,6 +290,61 @@ declare class Vec2 {
         x: number;
         y: number;
     };
+    /**
+     * Calculates the angle (in radians) using atan2
+     * @returns The angle in radians.
+     */
+    atan2(): number;
+    /**
+     * Sets the components of this vector to zero in-place.
+     * @returns This vector after setting its components to zero.
+     */
+    izero(): this;
+    /**
+     * Calculates the Euclidean distance between this vector and an array representing a point.
+     *
+     * @param arr - An array of two numbers representing the point's x and y coordinates.
+     * @returns The Euclidean distance between this vector and the point.
+     */
+    dist(arr: [number, number]): number;
+    /**
+     * Calculates the Euclidean distance between this vector and an object representing a point.
+     *
+     * @param obj - An object with 'x' and 'y' properties representing the point's coordinates.
+     * @returns The Euclidean distance between this vector and the point.
+     */
+    dist(obj: {
+        x: number;
+        y: number;
+    }): number;
+    /**
+     * Calculates the Euclidean distance between this vector and another Vec2 instance.
+     *
+     * @param other - The other Vec2 instance.
+     * @returns The Euclidean distance between this vector and the other Vec2 instance.
+     */
+    dist(other: Vec2): number;
+    /**
+     * Calculates the squared distance between this vector and an array representing another vector.
+     * @param arr - An array representing the other vector.
+     * @returns The squared distance between the two vectors.
+     */
+    distSq(arr: [number, number]): number;
+    /**
+     * Calculates the squared distance between this vector and an object representing another vector.
+     * @param obj - An object representing the other vector.
+     * @returns The squared distance between the two vectors.
+     */
+    distSq(obj: {
+        x: number;
+        y: number;
+    }): number;
+    /**
+     * Calculates the squared distance between this vector and another Vec2 object.
+     * @param other - The other Vec2 object.
+     * @returns The squared distance between the two vectors.
+     */
+    distSq(other: Vec2): number;
     /**
      * Creates a new Vec2 with both components set to 0.
      * @returns A new zero vector.
