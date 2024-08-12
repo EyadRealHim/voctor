@@ -205,6 +205,15 @@ export default class Vec2 {
     }
 
     /**
+     * Computes the cross product of this vector and another Vec2.
+     * @param other - The other Vec2.
+     * @returns The cross product.
+     */
+    cross(other: Vec2) {
+        return this.x * other.y - this.y * other.x;
+    }
+
+    /**
      * Returns a new vector with the maximum x and y components between this vector and a scalar.
      * @param scaler - The scalar to compare against.
      * @returns A new vector with the maximum components.
@@ -645,6 +654,37 @@ export default class Vec2 {
     static fromObject(object: { x: number; y: number }) {
         return new Vec2(object.x, object.y);
     }
+
+    /**
+     * Creates a new Vec2 from a single number, setting both x and y to that number.
+     * @param scaler - The number to create the vector from.
+     * @returns A new Vec2 instance.
+     */
+    static from(scaler: number): Vec2;
+    /**
+     * Creates a new Vec2 from an array of two numbers.
+     * @param array - The array of two numbers [x, y].
+     * @returns A new Vec2 instance.
+     */
+    static from(array: [number, number]): Vec2;
+    /**
+     * Creates a new Vec2 from an object with x and y properties.
+     * @param object - The object with x and y properties.
+     * @returns A new Vec2 instance.
+     */
+    static from(object: { x: number; y: number }): Vec2;
+    /**
+     * Creates a new Vec2 from a number, an array of two numbers, or an object with x and y properties.
+     * @param other - The value to create the vector from.
+     * @returns A new Vec2 instance.
+     */
+    static from(other: number | [number, number] | { x: number; y: number }) {
+        if (typeof other == "number") return Vec2.fromScaler(other);
+        if (Array.isArray(other)) return Vec2.fromArray(other);
+
+        return Vec2.fromObject(other);
+    }
+
     /**
      * Creates a new Vec2 with random components between 0 and the given scale.
      * @param scale - The maximum value for the random components (default: 1).
