@@ -1,6 +1,6 @@
 {
     "name": "voctor",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "voctor is a versatile and high-performance library for vector mathematics, providing easy-to-use implementations for vectors",
     "main": "dist/index.js",
     "scripts": {
