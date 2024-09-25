@@ -7,6 +7,7 @@
         "compile": "tsup ./src/index.ts --format cjs,esm --dts",
         "release": "npm run compile && npm run lint",
         "publish": "npm run release && npm publish --access=public",
+        "test": "ts-node src/index.test.ts",
         "try": "ts-node src/index.ts",
         "lint": "tsc"
     },

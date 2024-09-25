@@ -1,4 +1,2 @@
-import Vec2 from "./Vec2";
-import Vec3 from "./Vec3";
-
-export { Vec2, Vec3 };
+export * from "./Vec2";
+export * from "./Vec3";
