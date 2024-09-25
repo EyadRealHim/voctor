@@ -4,73 +4,97 @@ var Vec2 = class _Vec2 {
     this.x = x;
     this.y = y;
   }
+  // Methods:
+  /**
+   * Applies a callback function to each component of this vector and another vector.
+   * @param other - The other vector or array of numbers.
+   * @param callback - The callback function to apply.
+   * @returns A new Vec2 with the result of the callback function applied to each component.
+   */
+  mapWith(other, callback) {
+    if (Array.isArray(other)) {
+      return new _Vec2(
+        callback(this.x, other[0]),
+        callback(this.y, other[1])
+      );
+    } else {
+      return new _Vec2(
+        callback(this.x, other.x),
+        callback(this.y, other.y)
+      );
+    }
+  }
+  /**
+   * Applies a callback function to each component of this vector and another vector, in place.
+   * @param other - The other vector or array of numbers.
+   * @param callback - The callback function to apply.
+   * @returns This Vec2.
+   */
+  imapWith(other, callback) {
+    if (Array.isArray(other)) {
+      this.x = callback(this.x, other[0]);
+      this.y = callback(this.y, other[1]);
+    } else {
+      this.x = callback(this.x, other.x);
+      this.y = callback(this.y, other.y);
+    }
+    return this;
+  }
   add(other) {
     if (typeof other === "number") {
-      return new _Vec2(this.x + other, this.y + other);
+      return this.map((e) => e + other);
     } else {
-      return new _Vec2(this.x + other.x, this.y + other.y);
+      return this.mapWith(other, (self, other2) => self + other2);
     }
   }
   iadd(other) {
     if (typeof other === "number") {
-      this.x += other;
-      this.y += other;
+      return this.imap((e) => e + other);
     } else {
-      this.x += other.x;
-      this.y += other.y;
+      return this.imapWith(other, (self, other2) => self + other2);
     }
-    return this;
   }
   sub(other) {
     if (typeof other === "number") {
-      return new _Vec2(this.x - other, this.y - other);
+      return this.map((e) => e - other);
     } else {
-      return new _Vec2(this.x - other.x, this.y - other.y);
+      return this.mapWith(other, (self, other2) => self - other2);
     }
   }
   isub(other) {
     if (typeof other === "number") {
-      this.x -= other;
-      this.y -= other;
+      return this.imap((e) => e - other);
     } else {
-      this.x -= other.x;
-      this.y -= other.y;
+      return this.imapWith(other, (self, other2) => self - other2);
     }
-    return this;
   }
   mul(other) {
     if (typeof other === "number") {
-      return new _Vec2(this.x * other, this.y * other);
+      return this.map((e) => e * other);
     } else {
-      return new _Vec2(this.x * other.x, this.y * other.y);
+      return this.mapWith(other, (self, other2) => self * other2);
     }
   }
   imul(other) {
     if (typeof other === "number") {
-      this.x *= other;
-      this.y *= other;
+      return this.imap((e) => e * other);
     } else {
-      this.x *= other.x;
-      this.y *= other.y;
+      return this.imapWith(other, (self, other2) => self * other2);
     }
-    return this;
   }
   div(other) {
     if (typeof other === "number") {
-      return new _Vec2(this.x / other, this.y / other);
+      return this.map((e) => e / other);
     } else {
-      return new _Vec2(this.x / other.x, this.y / other.y);
+      return this.mapWith(other, (self, other2) => self / other2);
     }
   }
   idiv(other) {
     if (typeof other === "number") {
-      this.x /= other;
-      this.y /= other;
+      return this.imap((e) => e / other);
     } else {
-      this.x /= other.x;
-      this.y /= other.y;
+      return this.imapWith(other, (self, other2) => self / other2);
     }
-    return this;
   }
   /**
    * Calculates the average of this vector and another vector, returning a new vector.
@@ -78,7 +102,7 @@ var Vec2 = class _Vec2 {
    * @returns A new vector representing the average of the two vectors.
    */
   avg(other) {
-    return new _Vec2((this.x + other.x) / 2, (this.y + other.y) / 2);
+    return this.mapWith(other, (self, other2) => (self + other2) / 2);
   }
   /**
    * Calculates the average of this vector and another vector in-place.
@@ -86,9 +110,7 @@ var Vec2 = class _Vec2 {
    * @returns This vector after averaging.
    */
   iavg(other) {
-    this.x = (this.x + other.x) / 2;
-    this.y = (this.y + other.y) / 2;
-    return this;
+    return this.imapWith(other, (self, other2) => (self + other2) / 2);
   }
   /**
    * Calculates the dot product of this vector and another vector.
@@ -96,7 +118,11 @@ var Vec2 = class _Vec2 {
    * @returns The dot product of the two vectors.
    */
   dot(other) {
-    return this.x * other.x + this.y * other.y;
+    if (Array.isArray(other)) {
+      return this.x * other[0] + this.y * other[1];
+    } else {
+      return this.x * other.x + this.y * other.y;
+    }
   }
   /**
    * Computes the cross product of this vector and another Vec2.
@@ -104,29 +130,39 @@ var Vec2 = class _Vec2 {
    * @returns The cross product.
    */
   cross(other) {
-    return this.x * other.y - this.y * other.x;
+    if (Array.isArray(other)) {
+      return this.x * other[1] + this.y * other[0];
+    } else {
+      return this.x * other.y - this.y * other.x;
+    }
   }
   max(other) {
-    return new _Vec2(
-      Math.max(this.x, typeof other === "number" ? other : other.x),
-      Math.max(this.y, typeof other === "number" ? other : other.y)
-    );
+    if (typeof other === "number") {
+      return this.map((e) => Math.max(e, other));
+    } else {
+      return this.mapWith(other, Math.max);
+    }
   }
   imax(other) {
-    this.x = Math.max(this.x, typeof other === "number" ? other : other.x);
-    this.y = Math.max(this.y, typeof other === "number" ? other : other.y);
-    return this;
+    if (typeof other === "number") {
+      return this.imap((e) => Math.max(e, other));
+    } else {
+      return this.imapWith(other, Math.max);
+    }
   }
   min(other) {
-    return new _Vec2(
-      Math.min(this.x, typeof other === "number" ? other : other.x),
-      Math.min(this.y, typeof other === "number" ? other : other.y)
-    );
+    if (typeof other === "number") {
+      return this.map((e) => Math.min(e, other));
+    } else {
+      return this.mapWith(other, Math.min);
+    }
   }
   imin(other) {
-    this.x = Math.min(this.x, typeof other === "number" ? other : other.x);
-    this.y = Math.min(this.y, typeof other === "number" ? other : other.y);
-    return this;
+    if (typeof other === "number") {
+      return this.imap((e) => Math.min(e, other));
+    } else {
+      return this.imapWith(other, Math.min);
+    }
   }
   /**
    * Applies a callback function to each component of the vector, returning a new vector with the results.
@@ -249,9 +285,9 @@ var Vec2 = class _Vec2 {
    * @returns A new vector representing the interpolated value.
    */
   mix(other, alpha) {
-    return new _Vec2(
-      this.x + (other.x - this.x) * alpha,
-      this.y + (other.y - this.y) * alpha
+    return this.mapWith(
+      other,
+      (self, other2) => self + (other2 - self) * alpha
     );
   }
   /**
@@ -262,25 +298,24 @@ var Vec2 = class _Vec2 {
    * @returns This vector after interpolation.
    */
   imix(other, alpha) {
-    this.x += (other.x - this.x) * alpha;
-    this.y += (other.y - this.y) * alpha;
-    return this;
+    return this.imapWith(
+      other,
+      (self, other2) => self + (other2 - self) * alpha
+    );
   }
   /**
    * Returns a new vector with the components of this vector inverted.
    * @returns A new vector with inverted components.
    */
   inv() {
-    return new _Vec2(-this.x, -this.y);
+    return this.map((e) => -e);
   }
   /**
    * Inverts the components of this vector in-place.
    * @returns This vector after inverting its components.
    */
   iinv() {
-    this.x = -this.x;
-    this.y = -this.y;
-    return this;
+    return this.imap((e) => -e);
   }
   /**
    * Converts this vector to an array of its components.
@@ -308,15 +343,13 @@ var Vec2 = class _Vec2 {
    * @returns This vector after setting its components to zero.
    */
   izero() {
-    this.x = 0;
-    this.y = 0;
-    return this;
+    return this.map(() => 0);
   }
   /**
-   * Calculates the Euclidean distance between this vector and another object.
+   * Calculates the Euclidean distance between this vector and another Vec2 instance.
    *
-   * @param other - The other object to calculate the distance to. Can be a Vec2 instance, an object with x and y properties, or an array of two numbers.
-   * @returns The Euclidean distance between this vector and the other object.
+   * @param other - The other Vec2 instance.
+   * @returns The Euclidean distance between this vector and the other Vec2 instance.
    */
   dist(other) {
     if (Array.isArray(other)) {
@@ -330,8 +363,8 @@ var Vec2 = class _Vec2 {
     }
   }
   /**
-   * Calculates the squared distance between this vector and another vector represented as an array, object, or Vec2 object.
-   * @param other - The other vector.
+   * Calculates the squared distance between this vector and another Vec2 object.
+   * @param other - The other Vec2 object.
    * @returns The squared distance between the two vectors.
    */
   distSq(other) {
@@ -370,10 +403,7 @@ var Vec2 = class _Vec2 {
    * @returns A new vector representing the direction corresponding to the given angle.
    */
   static fromDegree(degree) {
-    return new _Vec2(
-      Math.cos(degree * Math.PI / 180),
-      Math.sin(degree * Math.PI / 180)
-    );
+    return this.fromAngle(degree * Math.PI / 180);
   }
   /**
    * Creates a new Vec2 from an angle in radians.
@@ -425,6 +455,46 @@ var Vec3 = class _Vec3 {
     this.x = x;
     this.y = y;
     this.z = z;
+  }
+  // Methods:
+  /**
+   * Applies a callback function to each component of this vector and another vector.
+   * @param other - The other vector or array of numbers.
+   * @param callback - The callback function to apply.
+   * @returns A new Vec3 with the result of the callback function applied to each component.
+   */
+  mapWith(other, callback) {
+    if (Array.isArray(other)) {
+      return new _Vec3(
+        callback(this.x, other[0]),
+        callback(this.y, other[1]),
+        callback(this.z, other[2])
+      );
+    } else {
+      return new _Vec3(
+        callback(this.x, other.x),
+        callback(this.y, other.y),
+        callback(this.z, other.y)
+      );
+    }
+  }
+  /**
+   * Applies a callback function to each component of this vector and another vector, in place.
+   * @param other - The other vector or array of numbers.
+   * @param callback - The callback function to apply.
+   * @returns This Vec3.
+   */
+  imapWith(other, callback) {
+    if (Array.isArray(other)) {
+      this.x = callback(this.x, other[0]);
+      this.y = callback(this.y, other[1]);
+      this.z = callback(this.z, other[2]);
+    } else {
+      this.x = callback(this.x, other.x);
+      this.y = callback(this.y, other.y);
+      this.z = callback(this.z, other.z);
+    }
+    return this;
   }
   add(other) {
     if (typeof other === "number") {

@@ -1,4 +1,4 @@
-import { Vec2, Vec3 } from "voctor";
+import { Vec2, Vec3 } from "/home/user/voctor";
 
 {
     const a = new Vec2(1, 5);

@@ -10,7 +10,10 @@ export default class Vec2 {
      * @param callback - The callback function to apply.
      * @returns A new Vec2 with the result of the callback function applied to each component.
      */
-    mapWith(other: Vec2Like, callback: (v1: number, v2: number) => number) {
+    mapWith(
+        other: Vec2Like,
+        callback: (self: number, other: number) => number
+    ) {
         if (Array.isArray(other)) {
             return new Vec2(
                 callback(this.x, other[0]),
@@ -30,7 +33,10 @@ export default class Vec2 {
      * @param callback - The callback function to apply.
      * @returns This Vec2.
      */
-    imapWith(other: Vec2Like, callback: (v1: number, v2: number) => number) {
+    imapWith(
+        other: Vec2Like,
+        callback: (self: number, other: number) => number
+    ) {
         if (Array.isArray(other)) {
             this.x = callback(this.x, other[0]);
             this.y = callback(this.y, other[1]);
@@ -54,12 +60,12 @@ export default class Vec2 {
      * @param other - The vector to add.
      * @returns A new vector representing the sum of the two vectors.
      */
-    add(other: Vec2): Vec2;
-    add(other: number | Vec2): Vec2 {
+    add(other: Vec2Like): Vec2;
+    add(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            return new Vec2(this.x + other, this.y + other);
+            return this.map((e) => e + other);
         } else {
-            return new Vec2(this.x + other.x, this.y + other.y);
+            return this.mapWith(other, (self, other) => self + other);
         }
     }
 
@@ -74,16 +80,13 @@ export default class Vec2 {
      * @param other - The vector to add.
      * @returns This vector after the addition.
      */
-    iadd(other: Vec2): Vec2;
-    iadd(other: number | Vec2): Vec2 {
+    iadd(other: Vec2Like): Vec2;
+    iadd(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            this.x += other;
-            this.y += other;
+            return this.imap((e) => e + other);
         } else {
-            this.x += other.x;
-            this.y += other.y;
+            return this.imapWith(other, (self, other) => self + other);
         }
-        return this;
     }
 
     /**
@@ -97,12 +100,12 @@ export default class Vec2 {
      * @param other - The vector to subtract.
      * @returns A new vector representing the difference of the two vectors.
      */
-    sub(other: Vec2): Vec2;
-    sub(other: number | Vec2): Vec2 {
+    sub(other: Vec2Like): Vec2;
+    sub(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            return new Vec2(this.x - other, this.y - other);
+            return this.map((e) => e - other);
         } else {
-            return new Vec2(this.x - other.x, this.y - other.y);
+            return this.mapWith(other, (self, other) => self - other);
         }
     }
 
@@ -117,16 +120,13 @@ export default class Vec2 {
      * @param other - The vector to subtract.
      * @returns This vector after the subtraction.
      */
-    isub(other: Vec2): Vec2;
-    isub(other: number | Vec2): Vec2 {
+    isub(other: Vec2Like): Vec2;
+    isub(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            this.x -= other;
-            this.y -= other;
+            return this.imap((e) => e - other);
         } else {
-            this.x -= other.x;
-            this.y -= other.y;
+            return this.imapWith(other, (self, other) => self - other);
         }
-        return this;
     }
 
     /**
@@ -140,12 +140,12 @@ export default class Vec2 {
      * @param other - The vector to multiply by.
      * @returns A new vector representing the component-wise product of the two vectors.
      */
-    mul(other: Vec2): Vec2;
-    mul(other: number | Vec2): Vec2 {
+    mul(other: Vec2Like): Vec2;
+    mul(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            return new Vec2(this.x * other, this.y * other);
+            return this.map((e) => e * other);
         } else {
-            return new Vec2(this.x * other.x, this.y * other.y);
+            return this.mapWith(other, (self, other) => self * other);
         }
     }
 
@@ -160,16 +160,13 @@ export default class Vec2 {
      * @param other - The vector to multiply by.
      * @returns This vector after the multiplication.
      */
-    imul(other: Vec2): Vec2;
-    imul(other: number | Vec2): Vec2 {
+    imul(other: Vec2Like): Vec2;
+    imul(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            this.x *= other;
-            this.y *= other;
+            return this.imap((e) => e * other);
         } else {
-            this.x *= other.x;
-            this.y *= other.y;
+            return this.imapWith(other, (self, other) => self * other);
         }
-        return this;
     }
 
     /**
@@ -183,12 +180,12 @@ export default class Vec2 {
      * @param other - The vector to divide by.
      * @returns A new vector representing the component-wise division of the two vectors.
      */
-    div(other: Vec2): Vec2;
-    div(other: number | Vec2): Vec2 {
+    div(other: Vec2Like): Vec2;
+    div(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            return new Vec2(this.x / other, this.y / other);
+            return this.map((e) => e / other);
         } else {
-            return new Vec2(this.x / other.x, this.y / other.y);
+            return this.mapWith(other, (self, other) => self / other);
         }
     }
 
@@ -203,16 +200,13 @@ export default class Vec2 {
      * @param other - The vector to divide by.
      * @returns This vector after the division.
      */
-    idiv(other: Vec2): Vec2;
-    idiv(other: number | Vec2): Vec2 {
+    idiv(other: Vec2Like): Vec2;
+    idiv(other: number | Vec2Like): Vec2 {
         if (typeof other === "number") {
-            this.x /= other;
-            this.y /= other;
+            return this.imap((e) => e / other);
         } else {
-            this.x /= other.x;
-            this.y /= other.y;
+            return this.imapWith(other, (self, other) => self / other);
         }
-        return this;
     }
 
     /**
@@ -220,8 +214,8 @@ export default class Vec2 {
      * @param other - The other vector.
      * @returns A new vector representing the average of the two vectors.
      */
-    avg(other: Vec2) {
-        return new Vec2((this.x + other.x) / 2, (this.y + other.y) / 2);
+    avg(other: Vec2Like) {
+        return this.mapWith(other, (self, other) => (self + other) / 2);
     }
 
     /**
@@ -229,10 +223,8 @@ export default class Vec2 {
      * @param other - The other vector.
      * @returns This vector after averaging.
      */
-    iavg(other: Vec2) {
-        this.x = (this.x + other.x) / 2;
-        this.y = (this.y + other.y) / 2;
-        return this;
+    iavg(other: Vec2Like) {
+        return this.imapWith(other, (self, other) => (self + other) / 2);
     }
 
     /**
@@ -240,8 +232,12 @@ export default class Vec2 {
      * @param other - The other vector.
      * @returns The dot product of the two vectors.
      */
-    dot(other: Vec2) {
-        return this.x * other.x + this.y * other.y;
+    dot(other: Vec2Like): number {
+        if (Array.isArray(other)) {
+            return this.x * other[0] + this.y * other[1];
+        } else {
+            return this.x * other.x + this.y * other.y;
+        }
     }
 
     /**
@@ -249,8 +245,12 @@ export default class Vec2 {
      * @param other - The other Vec2.
      * @returns The cross product.
      */
-    cross(other: Vec2) {
-        return this.x * other.y - this.y * other.x;
+    cross(other: Vec2Like): number {
+        if (Array.isArray(other)) {
+            return this.x * other[1] + this.y * other[0];
+        } else {
+            return this.x * other.y - this.y * other.x;
+        }
     }
 
     /**
@@ -264,12 +264,13 @@ export default class Vec2 {
      * @param other - The other vector to compare against.
      * @returns A new vector with the maximum components.
      */
-    max(other: Vec2): Vec2;
-    max(other: number | Vec2): Vec2 {
-        return new Vec2(
-            Math.max(this.x, typeof other === "number" ? other : other.x),
-            Math.max(this.y, typeof other === "number" ? other : other.y)
-        );
+    max(other: Vec2Like): Vec2;
+    max(other: number | Vec2Like): Vec2 {
+        if (typeof other === "number") {
+            return this.map((e) => Math.max(e, other));
+        } else {
+            return this.mapWith(other, Math.max);
+        }
     }
 
     /**
@@ -283,11 +284,13 @@ export default class Vec2 {
      * @param other - The other vector to compare against.
      * @returns This vector after the operation.
      */
-    imax(other: Vec2): Vec2;
-    imax(other: number | Vec2): Vec2 {
-        this.x = Math.max(this.x, typeof other === "number" ? other : other.x);
-        this.y = Math.max(this.y, typeof other === "number" ? other : other.y);
-        return this;
+    imax(other: Vec2Like): Vec2;
+    imax(other: number | Vec2Like): Vec2 {
+        if (typeof other === "number") {
+            return this.imap((e) => Math.max(e, other));
+        } else {
+            return this.imapWith(other, Math.max);
+        }
     }
 
     /**
@@ -301,12 +304,13 @@ export default class Vec2 {
      * @param other - The other vector to compare against.
      * @returns A new vector with the minimum components.
      */
-    min(other: Vec2): Vec2;
-    min(other: number | Vec2): Vec2 {
-        return new Vec2(
-            Math.min(this.x, typeof other === "number" ? other : other.x),
-            Math.min(this.y, typeof other === "number" ? other : other.y)
-        );
+    min(other: Vec2Like): Vec2;
+    min(other: number | Vec2Like): Vec2 {
+        if (typeof other === "number") {
+            return this.map((e) => Math.min(e, other));
+        } else {
+            return this.mapWith(other, Math.min);
+        }
     }
 
     /**
@@ -322,9 +326,11 @@ export default class Vec2 {
      */
     imin(other: Vec2): Vec2;
     imin(other: number | Vec2): Vec2 {
-        this.x = Math.min(this.x, typeof other === "number" ? other : other.x);
-        this.y = Math.min(this.y, typeof other === "number" ? other : other.y);
-        return this;
+        if (typeof other === "number") {
+            return this.imap((e) => Math.min(e, other));
+        } else {
+            return this.imapWith(other, Math.min);
+        }
     }
 
     /**
@@ -446,7 +452,7 @@ export default class Vec2 {
      * @param vec - The vector to copy components from.
      * @returns This vector after the operation.
      */
-    set(vec: Vec2): this;
+    set(vec: Vec2Like): this;
     /**
      * Sets the components of this vector to the given x and y values.
      * @param x - The new x component.
@@ -454,8 +460,7 @@ export default class Vec2 {
      * @returns This vector after the operation.
      */
     set(x: number, y: number): this;
-    set(arr: [number, number]): this;
-    set(a1: number | Vec2 | [number, number], a2?: number) {
+    set(a1: number | Vec2Like, a2?: number) {
         if (typeof a1 === "number") {
             if (typeof a2 == "number") {
                 this.x = a1;
@@ -482,10 +487,10 @@ export default class Vec2 {
      * @param alpha - The interpolation factor (between 0 and 1).
      * @returns A new vector representing the interpolated value.
      */
-    mix(other: Vec2, alpha: number) {
-        return new Vec2(
-            this.x + (other.x - this.x) * alpha,
-            this.y + (other.y - this.y) * alpha
+    mix(other: Vec2Like, alpha: number) {
+        return this.mapWith(
+            other,
+            (self, other) => self + (other - self) * alpha
         );
     }
     /**
@@ -495,10 +500,11 @@ export default class Vec2 {
      * @param alpha The interpolation factor (between 0 and 1).
      * @returns This vector after interpolation.
      */
-    imix(other: Vec2, alpha: number) {
-        this.x += (other.x - this.x) * alpha;
-        this.y += (other.y - this.y) * alpha;
-        return this;
+    imix(other: Vec2Like, alpha: number) {
+        return this.imapWith(
+            other,
+            (self, other) => self + (other - self) * alpha
+        );
     }
 
     /**
@@ -506,7 +512,7 @@ export default class Vec2 {
      * @returns A new vector with inverted components.
      */
     inv() {
-        return new Vec2(-this.x, -this.y);
+        return this.map((e) => -e);
     }
 
     /**
@@ -514,10 +520,7 @@ export default class Vec2 {
      * @returns This vector after inverting its components.
      */
     iinv() {
-        this.x = -this.x;
-        this.y = -this.y;
-
-        return this;
+        return this.imap((e) => -e);
     }
 
     /**
@@ -549,27 +552,8 @@ export default class Vec2 {
      * @returns This vector after setting its components to zero.
      */
     izero() {
-        this.x = 0;
-        this.y = 0;
-
-        return this;
+        return this.map(() => 0);
     }
-
-    /**
-     * Calculates the Euclidean distance between this vector and an array representing a point.
-     *
-     * @param arr - An array of two numbers representing the point's x and y coordinates.
-     * @returns The Euclidean distance between this vector and the point.
-     */
-    dist(arr: [number, number]): number;
-
-    /**
-     * Calculates the Euclidean distance between this vector and an object representing a point.
-     *
-     * @param obj - An object with 'x' and 'y' properties representing the point's coordinates.
-     * @returns The Euclidean distance between this vector and the point.
-     */
-    dist(obj: { x: number; y: number }): number;
 
     /**
      * Calculates the Euclidean distance between this vector and another Vec2 instance.
@@ -577,15 +561,7 @@ export default class Vec2 {
      * @param other - The other Vec2 instance.
      * @returns The Euclidean distance between this vector and the other Vec2 instance.
      */
-    dist(other: Vec2): number;
-
-    /**
-     * Calculates the Euclidean distance between this vector and another object.
-     *
-     * @param other - The other object to calculate the distance to. Can be a Vec2 instance, an object with x and y properties, or an array of two numbers.
-     * @returns The Euclidean distance between this vector and the other object.
-     */
-    dist(other: Vec2 | { x: number; y: number } | [number, number]) {
+    dist(other: Vec2Like) {
         if (Array.isArray(other)) {
             return Math.sqrt(
                 (this.x - other[0]) * (this.x - other[0]) +
@@ -600,29 +576,11 @@ export default class Vec2 {
     }
 
     /**
-     * Calculates the squared distance between this vector and an array representing another vector.
-     * @param arr - An array representing the other vector.
-     * @returns The squared distance between the two vectors.
-     */
-    distSq(arr: [number, number]): number;
-    /**
-     * Calculates the squared distance between this vector and an object representing another vector.
-     * @param obj - An object representing the other vector.
-     * @returns The squared distance between the two vectors.
-     */
-    distSq(obj: { x: number; y: number }): number;
-    /**
      * Calculates the squared distance between this vector and another Vec2 object.
      * @param other - The other Vec2 object.
      * @returns The squared distance between the two vectors.
      */
-    distSq(other: Vec2): number;
-    /**
-     * Calculates the squared distance between this vector and another vector represented as an array, object, or Vec2 object.
-     * @param other - The other vector.
-     * @returns The squared distance between the two vectors.
-     */
-    distSq(other: Vec2 | { x: number; y: number } | [number, number]) {
+    distSq(other: Vec2Like) {
         if (Array.isArray(other)) {
             return (
                 (this.x - other[0]) * (this.x - other[0]) +
@@ -665,10 +623,7 @@ export default class Vec2 {
      * @returns A new vector representing the direction corresponding to the given angle.
      */
     static fromDegree(degree: number) {
-        return new Vec2(
-            Math.cos((degree * Math.PI) / 180),
-            Math.sin((degree * Math.PI) / 180)
-        );
+        return this.fromAngle((degree * Math.PI) / 180);
     }
     /**
      * Creates a new Vec2 from an angle in radians.

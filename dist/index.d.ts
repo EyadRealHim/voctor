@@ -1,7 +1,25 @@
+type Vec2Like = [number, number] | {
+    x: number;
+    y: number;
+};
 declare class Vec2 {
     x: number;
     y: number;
     constructor(x: number, y: number);
+    /**
+     * Applies a callback function to each component of this vector and another vector.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns A new Vec2 with the result of the callback function applied to each component.
+     */
+    mapWith(other: Vec2Like, callback: (self: number, other: number) => number): Vec2;
+    /**
+     * Applies a callback function to each component of this vector and another vector, in place.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns This Vec2.
+     */
+    imapWith(other: Vec2Like, callback: (self: number, other: number) => number): this;
     /**
      * Adds a scalar to each component of this vector, returning a new vector.
      * @param scaler - The scalar to add.
@@ -14,7 +32,7 @@ declare class Vec2 {
      * @param other - The vector to add.
      * @returns A new vector representing the sum of the two vectors.
      */
-    add(other: Vec2): Vec2;
+    add(other: Vec2Like): Vec2;
     /**
      * Adds a scalar to each component of this vector in-place.
      * @param scaler - The scalar to add.
@@ -26,7 +44,7 @@ declare class Vec2 {
      * @param other - The vector to add.
      * @returns This vector after the addition.
      */
-    iadd(other: Vec2): Vec2;
+    iadd(other: Vec2Like): Vec2;
     /**
      * Subtracts a scalar from each component of this vector, returning a new vector.
      * @param scaler - The scalar to subtract.
@@ -38,7 +56,7 @@ declare class Vec2 {
      * @param other - The vector to subtract.
      * @returns A new vector representing the difference of the two vectors.
      */
-    sub(other: Vec2): Vec2;
+    sub(other: Vec2Like): Vec2;
     /**
      * Subtracts a scalar from each component of this vector in-place.
      * @param scaler - The scalar to subtract.
@@ -50,7 +68,7 @@ declare class Vec2 {
      * @param other - The vector to subtract.
      * @returns This vector after the subtraction.
      */
-    isub(other: Vec2): Vec2;
+    isub(other: Vec2Like): Vec2;
     /**
      * Multiplies each component of this vector by a scalar, returning a new vector.
      * @param scaler - The scalar to multiply by.
@@ -62,7 +80,7 @@ declare class Vec2 {
      * @param other - The vector to multiply by.
      * @returns A new vector representing the component-wise product of the two vectors.
      */
-    mul(other: Vec2): Vec2;
+    mul(other: Vec2Like): Vec2;
     /**
      * Multiplies each component of this vector by a scalar in-place.
      * @param scaler - The scalar to multiply by.
@@ -74,7 +92,7 @@ declare class Vec2 {
      * @param other - The vector to multiply by.
      * @returns This vector after the multiplication.
      */
-    imul(other: Vec2): Vec2;
+    imul(other: Vec2Like): Vec2;
     /**
      * Divides each component of this vector by a scalar, returning a new vector.
      * @param scaler - The scalar to divide by.
@@ -86,7 +104,7 @@ declare class Vec2 {
      * @param other - The vector to divide by.
      * @returns A new vector representing the component-wise division of the two vectors.
      */
-    div(other: Vec2): Vec2;
+    div(other: Vec2Like): Vec2;
     /**
      * Divides each component of this vector by a scalar in-place.
      * @param scaler - The scalar to divide by.
@@ -98,31 +116,31 @@ declare class Vec2 {
      * @param other - The vector to divide by.
      * @returns This vector after the division.
      */
-    idiv(other: Vec2): Vec2;
+    idiv(other: Vec2Like): Vec2;
     /**
      * Calculates the average of this vector and another vector, returning a new vector.
      * @param other - The other vector.
      * @returns A new vector representing the average of the two vectors.
      */
-    avg(other: Vec2): Vec2;
+    avg(other: Vec2Like): Vec2;
     /**
      * Calculates the average of this vector and another vector in-place.
      * @param other - The other vector.
      * @returns This vector after averaging.
      */
-    iavg(other: Vec2): this;
+    iavg(other: Vec2Like): this;
     /**
      * Calculates the dot product of this vector and another vector.
      * @param other - The other vector.
      * @returns The dot product of the two vectors.
      */
-    dot(other: Vec2): number;
+    dot(other: Vec2Like): number;
     /**
      * Computes the cross product of this vector and another Vec2.
      * @param other - The other Vec2.
      * @returns The cross product.
      */
-    cross(other: Vec2): number;
+    cross(other: Vec2Like): number;
     /**
      * Returns a new vector with the maximum x and y components between this vector and a scalar.
      * @param scaler - The scalar to compare against.
@@ -134,7 +152,7 @@ declare class Vec2 {
      * @param other - The other vector to compare against.
      * @returns A new vector with the maximum components.
      */
-    max(other: Vec2): Vec2;
+    max(other: Vec2Like): Vec2;
     /**
      * Sets the x and y components of this vector to the maximum of their current values and the corresponding components of another vector or a scalar.
      * @param scaler - The scalar to compare against.
@@ -146,7 +164,7 @@ declare class Vec2 {
      * @param other - The other vector to compare against.
      * @returns This vector after the operation.
      */
-    imax(other: Vec2): Vec2;
+    imax(other: Vec2Like): Vec2;
     /**
      * Returns a new vector with the minimum x and y components between this vector and a scalar.
      * @param scaler - The scalar to compare against.
@@ -158,7 +176,7 @@ declare class Vec2 {
      * @param other - The other vector to compare against.
      * @returns A new vector with the minimum components.
      */
-    min(other: Vec2): Vec2;
+    min(other: Vec2Like): Vec2;
     /**
      * Sets the x and y components of this vector to the minimum of their current values and the corresponding components of another vector or a scalar.
      * @param scaler - The scalar to compare against.
@@ -249,7 +267,7 @@ declare class Vec2 {
      * @param vec - The vector to copy components from.
      * @returns This vector after the operation.
      */
-    set(vec: Vec2): this;
+    set(vec: Vec2Like): this;
     /**
      * Sets the components of this vector to the given x and y values.
      * @param x - The new x component.
@@ -257,14 +275,13 @@ declare class Vec2 {
      * @returns This vector after the operation.
      */
     set(x: number, y: number): this;
-    set(arr: [number, number]): this;
     /**
      * Linearly interpolates between this vector and another vector, returning a new vector.
      * @param other - The other vector.
      * @param alpha - The interpolation factor (between 0 and 1).
      * @returns A new vector representing the interpolated value.
      */
-    mix(other: Vec2, alpha: number): Vec2;
+    mix(other: Vec2Like, alpha: number): Vec2;
     /**
      * Performs a linear interpolation between this vector and another vector in-place.
      *
@@ -272,7 +289,7 @@ declare class Vec2 {
      * @param alpha The interpolation factor (between 0 and 1).
      * @returns This vector after interpolation.
      */
-    imix(other: Vec2, alpha: number): this;
+    imix(other: Vec2Like, alpha: number): this;
     /**
      * Returns a new vector with the components of this vector inverted.
      * @returns A new vector with inverted components.
@@ -305,52 +322,20 @@ declare class Vec2 {
      * Sets the components of this vector to zero in-place.
      * @returns This vector after setting its components to zero.
      */
-    izero(): this;
-    /**
-     * Calculates the Euclidean distance between this vector and an array representing a point.
-     *
-     * @param arr - An array of two numbers representing the point's x and y coordinates.
-     * @returns The Euclidean distance between this vector and the point.
-     */
-    dist(arr: [number, number]): number;
-    /**
-     * Calculates the Euclidean distance between this vector and an object representing a point.
-     *
-     * @param obj - An object with 'x' and 'y' properties representing the point's coordinates.
-     * @returns The Euclidean distance between this vector and the point.
-     */
-    dist(obj: {
-        x: number;
-        y: number;
-    }): number;
+    izero(): Vec2;
     /**
      * Calculates the Euclidean distance between this vector and another Vec2 instance.
      *
      * @param other - The other Vec2 instance.
      * @returns The Euclidean distance between this vector and the other Vec2 instance.
      */
-    dist(other: Vec2): number;
-    /**
-     * Calculates the squared distance between this vector and an array representing another vector.
-     * @param arr - An array representing the other vector.
-     * @returns The squared distance between the two vectors.
-     */
-    distSq(arr: [number, number]): number;
-    /**
-     * Calculates the squared distance between this vector and an object representing another vector.
-     * @param obj - An object representing the other vector.
-     * @returns The squared distance between the two vectors.
-     */
-    distSq(obj: {
-        x: number;
-        y: number;
-    }): number;
+    dist(other: Vec2Like): number;
     /**
      * Calculates the squared distance between this vector and another Vec2 object.
      * @param other - The other Vec2 object.
      * @returns The squared distance between the two vectors.
      */
-    distSq(other: Vec2): number;
+    distSq(other: Vec2Like): number;
     /**
      * Creates a new Vec2 with both components set to 0.
      * @returns A new zero vector.
@@ -423,11 +408,30 @@ declare class Vec2 {
     static random(scale?: number): Vec2;
 }
 
+type Vec3Like = {
+    x: number;
+    y: number;
+    z: number;
+} | [number, number, number];
 declare class Vec3 {
     x: number;
     y: number;
     z: number;
     constructor(x: number, y: number, z: number);
+    /**
+     * Applies a callback function to each component of this vector and another vector.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns A new Vec3 with the result of the callback function applied to each component.
+     */
+    mapWith(other: Vec3Like, callback: (v1: number, v2: number) => number): Vec3;
+    /**
+     * Applies a callback function to each component of this vector and another vector, in place.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns This Vec3.
+     */
+    imapWith(other: Vec3Like, callback: (v1: number, v2: number) => number): this;
     /**
      * Adds a scaler to this vector.
      * @param scaler - The scaler to add.
