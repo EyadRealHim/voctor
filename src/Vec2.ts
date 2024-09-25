@@ -1,7 +1,47 @@
+export type Vec2Like = [number, number] | { x: number; y: number };
+
 export default class Vec2 {
     constructor(public x: number, public y: number) {}
 
     // Methods:
+    /**
+     * Applies a callback function to each component of this vector and another vector.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns A new Vec2 with the result of the callback function applied to each component.
+     */
+    mapWith(other: Vec2Like, callback: (v1: number, v2: number) => number) {
+        if (Array.isArray(other)) {
+            return new Vec2(
+                callback(this.x, other[0]),
+                callback(this.y, other[1])
+            );
+        } else {
+            return new Vec2(
+                callback(this.x, other.x),
+                callback(this.y, other.y)
+            );
+        }
+    }
+
+    /**
+     * Applies a callback function to each component of this vector and another vector, in place.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns This Vec2.
+     */
+    imapWith(other: Vec2Like, callback: (v1: number, v2: number) => number) {
+        if (Array.isArray(other)) {
+            this.x = callback(this.x, other[0]);
+            this.y = callback(this.y, other[1]);
+        } else {
+            this.x = callback(this.x, other.x);
+            this.y = callback(this.y, other.y);
+        }
+
+        return this;
+    }
+
     /**
      * Adds a scalar to each component of this vector, returning a new vector.
      * @param scaler - The scalar to add.

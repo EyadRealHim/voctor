@@ -1,7 +1,51 @@
+type Vec3Like = { x: number; y: number; z: number } | [number, number, number];
+
 export default class Vec3 {
     constructor(public x: number, public y: number, public z: number) {}
 
     // Methods:
+    /**
+     * Applies a callback function to each component of this vector and another vector.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns A new Vec3 with the result of the callback function applied to each component.
+     */
+    mapWith(other: Vec3Like, callback: (v1: number, v2: number) => number) {
+        if (Array.isArray(other)) {
+            return new Vec3(
+                callback(this.x, other[0]),
+                callback(this.y, other[1]),
+                callback(this.z, other[2])
+            );
+        } else {
+            return new Vec3(
+                callback(this.x, other.x),
+                callback(this.y, other.y),
+                callback(this.z, other.y)
+            );
+        }
+    }
+
+    /**
+     * Applies a callback function to each component of this vector and another vector, in place.
+     * @param other - The other vector or array of numbers.
+     * @param callback - The callback function to apply.
+     * @returns This Vec3.
+     */
+    imapWith(other: Vec3Like, callback: (v1: number, v2: number) => number) {
+        if (Array.isArray(other)) {
+            this.x = callback(this.x, other[0]);
+            this.y = callback(this.y, other[1]);
+            this.z = callback(this.z, other[2]);
+        } else {
+            this.x = callback(this.x, other.x);
+            this.y = callback(this.y, other.y);
+            this.z = callback(this.z, other.z);
+        }
+
+        return this;
+    }
+
     /**
      * Adds a scaler to this vector.
      * @param scaler - The scaler to add.
