@@ -1,12 +1,12 @@
 {
     "name": "voctor",
-    "version": "1.0.2",
+    "version": "2.0.0",
     "description": "voctor is a versatile and high-performance library for vector mathematics, providing easy-to-use implementations for vectors",
     "main": "dist/index.js",
     "scripts": {
         "compile": "tsup ./src/index.ts --format cjs,esm --dts",
         "release": "npm run compile && npm run lint",
-        "publish": "npm run release && npm publish --access=public",
+        "publish": "npm run release && npm test && npm publish --access=public",
         "test": "ts-node src/index.test.ts",
         "try": "ts-node src/index.ts",
         "lint": "tsc"
